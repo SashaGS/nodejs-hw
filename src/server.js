@@ -5,10 +5,10 @@ import pinoHttp from 'pino-http';
 
 const app = express();
 
+// Підключаємо CORS
+app.use(cors({ origin: '*' }));
 // Підключаємо express.json()
 app.use(express.json());
-// Підключаємо CORS
-app.use(cors());
 // Підключаємо логер
 app.use(pinoHttp());
 

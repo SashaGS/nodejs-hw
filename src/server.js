@@ -2,6 +2,7 @@ import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
 import pinoHttp from 'pino-http';
+import helmet from 'helmet';
 // import createHttpErrors from 'http-errors';
 import { connectMongoDB } from './db/connectMongoDB.js';
 import { logger } from './middleware/logger.js';
@@ -12,6 +13,7 @@ import notesRoutes from './routes/notesRoutes.js';
 
 const app = express();
 
+// Підключаємо логер
 app.use(logger);
 // Підключаємо CORS
 app.use(cors({ origin: '*' }));
@@ -19,6 +21,8 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 // Підключаємо логер
 app.use(pinoHttp());
+// Підключаємо Helmet
+app.use(helmet());
 
 const PORT = process.env.PORT ?? 3000;
 

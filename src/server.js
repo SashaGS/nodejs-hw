@@ -28,6 +28,9 @@ app.get('/notes', async (req, res) => {
 app.get('/notes/:noteId', async (req, res) => {
   const noteid = req.params.noteId;
   const note = await Note.findOne({ _id: noteid });
+  if (!note) {
+    return res.status(404).json({ message: 'Note not found' });
+  }
   res.status(200).json(note);
 });
 

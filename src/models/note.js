@@ -25,7 +25,7 @@ const noteSchema = new Schema(
         'Important',
         'Todo',
       ],
-      default: 'personal',
+      default: 'Personal',
     },
   },
   { timestamps: true },

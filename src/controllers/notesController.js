@@ -16,5 +16,12 @@ export const getNoteById = async (req, res) => {
 };
 
 export const createNote = async (req, res) => {
-  res.status(201).json({});
+  try {
+    console.log('req.body:', req.body);
+    const note = await Note.create(req.body);
+    res.status(201).json(note);
+  } catch (err) {
+    console.error('Error creating note:', err);
+    res.status(500).json({ error: err.message });
+  }
 };

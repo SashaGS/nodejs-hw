@@ -25,10 +25,6 @@ app.use(pinoHttp());
 app.use(helmet());
 
 const PORT = process.env.PORT ?? 3000;
-
-// app.get('/test-error', () => {
-//   throw new Error('Simulated server error');
-// });
 // наши роуты
 app.use(notesRoutes);
 // 404 — якщо маршрут не знайдено

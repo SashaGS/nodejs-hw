@@ -17,11 +17,32 @@ export const getNoteById = async (req, res) => {
 
 export const createNote = async (req, res) => {
   try {
-    console.log('req.body:', req.body);
+    // console.log('req.body:', req.body);
     const note = await Note.create(req.body);
     res.status(201).json(note);
   } catch (err) {
-    console.error('Error creating note:', err);
+    // console.error('Error creating note:', err);
     res.status(500).json({ error: err.message });
   }
+};
+
+export const deleteNote = async (req, res) => {
+  // console.log('req.params:', req.params);
+  const noteId = req.params.noteId;
+  const delNote = await Note.findOneAndDelete({ _id: noteId });
+  if (!delNote) {
+    throw createHttpErrors(404, 'Note not found');
+  }
+  res.status(200).json(delNote);
+};
+
+export const updateNote = async (req, res) => {
+  const noteId = req.params.noteId;
+  const updNote = await Note.findOneAndUpdate({ _id: noteId }, req.body, {
+    returnDocument: 'after',
+  });
+  if (!updNote) {
+    throw createHttpErrors(404, 'Note not found');
+  }
+  res.status(200).json(updNote);
 };

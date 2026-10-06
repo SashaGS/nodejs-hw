@@ -2,11 +2,13 @@ import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
 import pinoHttp from 'pino-http';
+// import createHttpErrors from 'http-errors';
 import { connectMongoDB } from './db/connectMongoDB.js';
 import { logger } from './middleware/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { noteFoundHandler } from './middleware/noteFoundHandler.js';
-import { Note } from './models/note.js';
+// import { Note } from './models/note.js';
+import notesRoutes from './routes/notesRoutes.js';
 
 const app = express();
 
@@ -20,24 +22,11 @@ app.use(pinoHttp());
 
 const PORT = process.env.PORT ?? 3000;
 
-app.get('/notes', async (req, res) => {
-  const notes = await Note.find();
-  res.status(200).json(notes);
-});
-
-app.get('/notes/:noteId', async (req, res) => {
-  const noteid = req.params.noteId;
-  const note = await Note.findOne({ _id: noteid });
-  if (!note) {
-    return res.status(404).json({ message: 'Note not found' });
-  }
-  res.status(200).json(note);
-});
-
-app.get('/test-error', () => {
-  throw new Error('Simulated server error');
-});
-
+// app.get('/test-error', () => {
+//   throw new Error('Simulated server error');
+// });
+// наши роуты
+app.use(notesRoutes);
 // 404 — якщо маршрут не знайдено
 app.use(noteFoundHandler);
 

@@ -1,7 +1,7 @@
 import createHttpErrors from 'http-errors';
 import { Note } from '../models/note.js';
 
-export const getNNotes = async (req, res) => {
+export const getAllNotes = async (req, res) => {
   const notes = await Note.find();
   res.status(200).json(notes);
 };
@@ -22,7 +22,8 @@ export const createNote = async (req, res) => {
     res.status(201).json(note);
   } catch (err) {
     // console.error('Error creating note:', err);
-    res.status(500).json({ error: err.message });
+    // res.status(500).json({ error: err.message });
+    throw createHttpErrors(500, err.message);
   }
 };
 

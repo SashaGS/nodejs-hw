@@ -25,5 +25,17 @@ export const noteIdSchema = {
     noteId: Joi.string().custom(noteIdValidator).required(),
   }),
 };
-//createNoteSchema
-//updateNoteSchema
+export const createNoteSchema = {
+  [Segments.BODY]: Joi.object({
+    title: Joi.string().min(1).required(),
+    content: Joi.string().allow('').optional(),
+    tag: Joi.string()
+      .valid(...TAGS)
+      .optional(),
+  }),
+};
+
+export const updateNoteSchema = {
+  ...noteIdSchema,
+  ...createNoteSchema.min(1), // Мінімум одне поле для оновлення
+};

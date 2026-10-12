@@ -21,8 +21,6 @@ export const createNote = async (req, res) => {
     const note = await Note.create(req.body);
     res.status(201).json(note);
   } catch (err) {
-    // console.error('Error creating note:', err);
-    // res.status(500).json({ error: err.message });
     throw createHttpErrors(500, err.message);
   }
 };

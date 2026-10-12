@@ -10,6 +10,7 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 // import { Note } from './models/note.js';
 import notesRoutes from './routes/notesRoutes.js';
+import { errors } from 'celebrate';
 
 const app = express();
 
@@ -29,7 +30,8 @@ const PORT = process.env.PORT ?? 3000;
 app.use(notesRoutes);
 // 404 — якщо маршрут не знайдено
 app.use(notFoundHandler);
-
+// Celebrate error handler
+app.use(errors());
 // Error — якщо під час запиту виникла помилка
 app.use(errorHandler);
 

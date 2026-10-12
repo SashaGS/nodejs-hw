@@ -37,5 +37,9 @@ export const createNoteSchema = {
 
 export const updateNoteSchema = {
   ...noteIdSchema,
-  ...createNoteSchema, // Мінімум одне поле для оновлення
+  [Segments.BODY]: Joi.object({
+    title: Joi.string().min(1),
+    content: Joi.string().allow(''),
+    tag: Joi.string().valid(...TAGS),
+  }).or('title', 'content', 'tag'), // <-- ключова перевірка, // Мінімум одне поле для оновлення
 };

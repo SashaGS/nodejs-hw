@@ -37,5 +37,5 @@ export const createNoteSchema = {
 
 export const updateNoteSchema = {
   ...noteIdSchema,
-  ...createNoteSchema.min(1), // Мінімум одне поле для оновлення
+  ...createNoteSchema, // Мінімум одне поле для оновлення
 };

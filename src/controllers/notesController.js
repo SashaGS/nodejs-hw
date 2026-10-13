@@ -47,13 +47,13 @@ export const getNoteById = async (req, res) => {
 };
 
 export const createNote = async (req, res) => {
-  try {
-    // console.log('req.body:', req.body);
-    const note = await Note.create(req.body);
-    res.status(201).json(note);
-  } catch (err) {
-    throw createHttpErrors(500, err.message);
-  }
+  // try {
+  // console.log('req.body:', req.body);
+  const note = await Note.create(req.body);
+  res.status(201).json(note);
+  // } catch (err) {
+  //   throw createHttpErrors(500, err.message);
+  // }
 };
 
 export const deleteNote = async (req, res) => {

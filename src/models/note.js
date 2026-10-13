@@ -34,4 +34,6 @@ const noteSchema = new Schema(
   { timestamps: true },
 );
 
+noteSchema.index({ tag: 1, title: 1, content: 1 }, { sparse: true });
+
 export const Note = model('Note', noteSchema);

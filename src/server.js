@@ -10,6 +10,7 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 // import { Note } from './models/note.js';
 import notesRoutes from './routes/notesRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 import { errors } from 'celebrate';
 
 const app = express();
@@ -26,6 +27,8 @@ app.use(express.json());
 // app.use(helmet());
 
 const PORT = process.env.PORT ?? 3000;
+
+app.use(authRoutes);
 // наши роуты
 app.use(notesRoutes);
 // 404 — якщо маршрут не знайдено

@@ -15,3 +15,24 @@ export const createSession = async (userId) => {
     sessionId: crypto.randomUUID(),
   });
 };
+
+export const setSessionCookie = (res, session) => {
+  res.cookie('accessToken', session.accessToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    maxAge: FIFTEEN_MINUTES,
+  });
+  res.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    maxAge: ONE_DAY,
+  });
+  res.cookie('sessionId', session.sessionId, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    maxAge: ONE_DAY,
+  });
+};

@@ -1,14 +1,11 @@
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
-// import pinoHttp from 'pino-http';
-// import helmet from 'helmet';
-// import createHttpErrors from 'http-errors';
+import cookieParser from 'cookie-parser';
 import { connectMongoDB } from './db/connectMongoDB.js';
 import { logger } from './middleware/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
-// import { Note } from './models/note.js';
 import notesRoutes from './routes/notesRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import { errors } from 'celebrate';
@@ -19,6 +16,7 @@ const app = express();
 app.use(logger);
 // Підключаємо CORS
 app.use(cors());
+app.use(cookieParser());
 // Підключаємо express.json()
 app.use(express.json());
 // Підключаємо логер

@@ -1,4 +1,4 @@
-import { router } from 'express';
+import { Router } from 'express';
 import { celebrate } from 'celebrate';
 import {
   registerSchema,
@@ -6,7 +6,7 @@ import {
 } from '../validations/authValidation.js';
 import { registerUser, loginUser } from '../controllers/authController.js';
 
-const authRouter = router();
+const authRouter = Router();
 
 authRouter.post('/auth/register', celebrate(registerSchema), registerUser);
 authRouter.post('/auth/login', celebrate(loginUserSchema), loginUser);

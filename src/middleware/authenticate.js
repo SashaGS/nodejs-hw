@@ -9,9 +9,26 @@ export const authenticate = async (req, res, next) => {
   }
 
   const session = Session.findOne({ accessToken });
+
   if (!session) {
     throw createHttpError(401, 'Session not found');
   }
+
+  const isAccessTokenExpired = session.accessTokenValidUntil < new Date();
+
+  if (isAccessTokenExpired) {
+    throw createHttpError(401, 'Access token expired');
+  }
+
+  const user = await User.findById(session.userId);
+
+  if (!user) {
+    createHttpError(401);
+  }
+
+  req.user = user;
+
+  next();
 };
 
 // PORT=3000

@@ -7,4 +7,15 @@ export const authenticate = async (req, res, next) => {
   if (!accessToken) {
     throw createHttpError(401, 'Missing access token');
   }
+
+  const session = Session.findOne({ accessToken });
+  if (!session) {
+    throw createHttpError(401, 'Session not found');
+  }
 };
+
+// PORT=3000
+// NODE_ENV=development
+// # MONGO_URL = mongodb+srv://fqva_db_user:rjZTZn7keveyexAJ@cluster0.dudqfhw.mongodb.net/?appName=Cluster0
+
+// MONGO_URL= mongodb://fqva_db_user:rjZTZn7keveyexAJ@ac-gwarbxr-shard-00-00.dudqfhw.mongodb.net:27017,ac-gwarbxr-shard-00-01.dudqfhw.mongodb.net:27017,ac-gwarbxr-shard-00-02.dudqfhw.mongodb.net:27017/notes-dev?ssl=true&replicaSet=atlas-11zh2v-shard-0&authSource=admin&retryWrites=true&w=majority

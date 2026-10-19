@@ -10,6 +10,8 @@ import notesRoutes from './routes/notesRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import { errors } from 'celebrate';
 
+const PORT = process.env.PORT ?? 3000;
+
 const app = express();
 
 // Підключаємо логер
@@ -23,8 +25,6 @@ app.use(express.json());
 // app.use(pinoHttp());
 // Підключаємо Helmet
 // app.use(helmet());
-
-const PORT = process.env.PORT ?? 3000;
 
 app.use(authRoutes);
 // наши роуты

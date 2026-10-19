@@ -12,7 +12,7 @@ export const createSession = async (userId) => {
     refreshToken,
     accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
     refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
-    sessionId: crypto.randomUUID(),
+    // sessionId: crypto.randomUUID(),
   });
 };
 
@@ -29,7 +29,7 @@ export const setSessionCookie = (res, session) => {
     sameSite: 'none',
     maxAge: ONE_DAY,
   });
-  res.cookie('sessionId', session.sessionId, {
+  res.cookie('sessionId', session._id, {
     httpOnly: true,
     secure: true,
     sameSite: 'none',

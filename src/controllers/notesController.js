@@ -30,9 +30,9 @@ export const getAllNotes = async (req, res) => {
 
   // console.log(notes);
 
-  if (notes.length === 0) {
-    throw createHttpErrors('404', 'Note not found');
-  }
+  // if (notes.length === 0) {
+  //   throw createHttpErrors('404', 'Note not found');
+  // }
 
   const totalPages = Math.ceil(totalNotes / perPage);
 

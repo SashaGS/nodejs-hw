@@ -8,6 +8,8 @@ export const getAllNotes = async (req, res) => {
 
   const notesQuery = Note.find();
 
+  notesQuery.where('userId').equals(req.user._id);
+
   if (tag) {
     notesQuery.where('tag').equals(tag);
   }
@@ -26,6 +28,12 @@ export const getAllNotes = async (req, res) => {
     notesQuery.skip(skip).limit(perPage),
   ]);
 
+  // console.log(notes);
+
+  if (notes.length === 0) {
+    throw createHttpErrors('404', 'Note not found');
+  }
+
   const totalPages = Math.ceil(totalNotes / perPage);
 
   res.status(200).json({
@@ -39,7 +47,7 @@ export const getAllNotes = async (req, res) => {
 
 export const getNoteById = async (req, res) => {
   const noteid = req.params.noteId;
-  const note = await Note.findOne({ _id: noteid });
+  const note = await Note.findOne({ _id: noteid, userId: req.user._id });
   if (!note) {
     throw createHttpErrors(404, 'Note not found');
   }
@@ -47,19 +55,20 @@ export const getNoteById = async (req, res) => {
 };
 
 export const createNote = async (req, res) => {
-  // try {
-  // console.log('req.body:', req.body);
-  const note = await Note.create(req.body);
+  const note = await Note.create({
+    ...req.body,
+    userId: req.user._id,
+  });
   res.status(201).json(note);
-  // } catch (err) {
-  //   throw createHttpErrors(500, err.message);
-  // }
 };
 
 export const deleteNote = async (req, res) => {
   // console.log('req.params:', req.params);
   const noteId = req.params.noteId;
-  const delNote = await Note.findOneAndDelete({ _id: noteId });
+  const delNote = await Note.findOneAndDelete({
+    _id: noteId,
+    userId: req.user._id,
+  });
   if (!delNote) {
     throw createHttpErrors(404, 'Note not found');
   }
@@ -68,9 +77,13 @@ export const deleteNote = async (req, res) => {
 
 export const updateNote = async (req, res) => {
   const noteId = req.params.noteId;
-  const updNote = await Note.findOneAndUpdate({ _id: noteId }, req.body, {
-    returnDocument: 'after',
-  });
+  const updNote = await Note.findOneAndUpdate(
+    { _id: noteId, userId: req.user._id },
+    req.body,
+    {
+      returnDocument: 'after',
+    },
+  );
   if (!updNote) {
     throw createHttpErrors(404, 'Note not found');
   }

@@ -4,6 +4,12 @@ import { User } from '../models/user.js';
 import bcrypt from 'bcrypt';
 import { createSession, setSessionCookies } from '../services/auth.js';
 import { Session } from '../models/session.js';
+import { sendEmail } from '../utils/sendMail.js';
+import jwt from 'jsonwebtoken';
+import handlebars from 'handlebars';
+import path from 'node:path';
+import fs from 'node:fs/promises';
+
 // import { setSessionCookies } from '../services/auth.js';
 
 export const registerUser = async (req, res, next) => {
@@ -94,6 +100,39 @@ export const requestResetEmail = async (req, res) => {
   const { email } = req.body;
 
   const user = User.findOne({ email });
+  if (!user) {
+    res.status(200).json({ message: 'Password reset email sent successfully' });
+  }
+
+  const JWT_Token = jwt.sign({ sub: user._id, email }, process.env.JWT_SECRET, {
+    expiresIn: '15m',
+  });
+
+  // 1. Формуємо шлях до шаблона
+  const templatePath = path.resolve('src/templates/reset-password-email.html');
+  // 2. Читаємо шаблон
+  const templateSource = await fs.readFile(templatePath, 'utf-8');
+  // 3. Готуємо шаблон до заповнення
+  const template = handlebars.compile(templateSource);
+  // 4. Формуємо із шаблона HTML документ з динамічними даними
+  const html = template({
+    name: user.username,
+    link: `${process.env.FRONTEND_DOMAIN}/reset-password?token=${JWT_Token}`,
+  });
+
+  try {
+    await sendEmail({
+      from: process.env.SMTP_FROM,
+      to: email,
+      subject: 'password reset link',
+      html,
+    });
+  } catch {
+    throw createHttpError(
+      500,
+      'Failed to send the email, please try again later.',
+    );
+  }
 
   res.status(200).json({ message: 'Password reset email sent successfully' });
 };

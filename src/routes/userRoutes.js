@@ -1,8 +1,9 @@
-// import { Router } from 'express';
-// import { celebrate } from 'celebrate';
-// import { requestResetEmailSchema } from '../validations/authValidation.js';
-// import { requestResetEmail } from '../controllers/userController.js';
+import { Router } from 'express';
+import { authenticate } from '../middleware/authenticate.js';
+import { updateUserAvatar } from '../controllers/userController.js';
 
-// const userRouter = Router();
+const userRouter = Router();
 
-// export default userRouter;
+userRouter.patch('/users/me/avatar', authenticate, updateUserAvatar);
+
+export default userRouter;

@@ -19,6 +19,7 @@ export const updateUserAvatar = async (req, res, next) => {
     { _id: user._id },
     { avatar: result.secure_url },
     { returnDocument: 'after' },
+    transformation:{ width: 500, height: 500, crop: 'fill', gravity: 'auto', },
   );
   res.status(200).json({ url: updatedUser.avatar });
-};
+}
